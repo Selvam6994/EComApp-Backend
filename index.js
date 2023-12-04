@@ -1,41 +1,20 @@
-import express from "express";
-import { MongoClient } from "mongodb";
-const app = express();
+import express from 'express'
+import cors from 'cors'
+import dotenv from 'dotenv'
+import connectDB from './Database/conectivity.js'
+import productRouter from './Routers/createProduct.route.js'
 
-const PORT = 4000;
-const url = "mongodb://0.0.0.0:27017";
-const client = new MongoClient(url);
-await client.connect();
+dotenv.config()
+
+const port = process.env.PORT
+const app = express()
+app.use(cors())
 app.use(express.json())
-app.get("/products", async function (request, response) {
-  const getProductData = await client
-    .db("ECommApp")
-    .collection("products")
-    .find()
-    .toArray();
-  console.log(getProductData);
-  response.send(getProductData)
-});
 
-app.post("/postproductdata", async function (request, response) {
-  const { name, price, reviews, inStock, quantity, unit, image,category } =  await request.body;
+console.log(connectDB())
 
-    const postProductData = await client
-      .db("ECommApp")
-      .collection("products")
-      .insertMany([{
-        name: name,
-        price: price,
-        reviews: reviews,
-        inStock: inStock,
-        quantity: quantity,
-        unit: unit,
-        image: image,
-        category:category
-      }]);
-      response.status(200).send(postProductData)
-  
-   
-});
+app.use('/api',productRouter)
 
-app.listen(PORT, () => console.log(`The server started in: ${PORT} ✨✨`));
+
+app.listen(port,()=>{console.log(`app connected to ${port}`)})
+
