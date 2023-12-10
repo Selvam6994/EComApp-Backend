@@ -8,6 +8,9 @@ import {
   getProductSpices,
 } from "../Controllers/product.controller.js";
 import express from "express";
+import { Auth } from "../Middlewares/product.auth.js";
+
+
 
 const productRouter = express.Router();
 productRouter.post("/create/product", createProduct);
@@ -22,6 +25,6 @@ productRouter.get("/products/oils", getProductOils);
 
 productRouter.get("/products/coffee", getProductCoffee);
 
-productRouter.get("/products/spices", getProductSpices);
+productRouter.get("/products/spices",Auth, getProductSpices);
 
 export default productRouter;

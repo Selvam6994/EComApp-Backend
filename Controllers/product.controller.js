@@ -1,4 +1,10 @@
 import { client } from "../Database/conectivity.js";
+import  jwt  from "jsonwebtoken";
+import dotenv from 'dotenv'
+
+
+dotenv.config()
+
 
 export const createProduct = async (req, res) => {
   try {
@@ -95,10 +101,13 @@ export const getProductCoffee = async(req,res)=>{
 
 export const getProductSpices  = async(req,res)=>{
     try {
+      
+    
         const getSpices = await client.db("Kodai_Flavors_Ecom")
         .collection("products")
         .find({category:"spices"}).toArray()
-        res.status(200).json(getSpices)
+        res.status(200).send({data:getSpices})
+      
 
     } catch (error) {
         res.status(500).json({ message: "server error", error: error });

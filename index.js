@@ -3,6 +3,7 @@ import cors from 'cors'
 import dotenv from 'dotenv'
 import productRouter from './Routers/createProduct.route.js'
 import { client } from './Database/conectivity.js'
+import authRouter from './Routers/auth.route.js'
 
 
 dotenv.config()
@@ -15,5 +16,6 @@ await client.connect();
 
 
 app.use('/api',productRouter)
+app.use('/auth',authRouter)
 
 app.listen(port,()=>{console.log(`app connected to ${port}`)})
